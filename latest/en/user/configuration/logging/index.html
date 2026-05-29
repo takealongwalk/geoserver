@@ -25,7 +25,7 @@
     
     
       
-        <title>Advanced log configuration - GeoServer Documentation</title>
+        <title>Advanced log configuration - Documentation</title>
       
     
     
@@ -51,9 +51,63 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/geoserver-brand.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script>
+(function() {
+  var host = location.hostname;
+  if (host === '127.0.0.1' || host === 'localhost' || host === '[::1]') {
+    var versionData = JSON.stringify({
+      default: 'latest',
+      versions: [
+        { version: 'latest', title: 'Latest', aliases: ['main', '3.0.x'], archive: false }
+      ]
+    });
+
+    function isVersionsJson(url) {
+      return typeof url === 'string' && url.indexOf('/versions.json') !== -1;
+    }
+
+    if (window.fetch) {
+      var originalFetch = window.fetch.bind(window);
+      window.fetch = function(resource, options) {
+        var url = typeof resource === 'string' ? resource : resource && resource.url;
+        if (isVersionsJson(url)) {
+          return Promise.resolve(new Response(versionData, {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          }));
+        }
+        return originalFetch(resource, options);
+      };
+    }
+
+    if (window.XMLHttpRequest) {
+      var originalOpen = XMLHttpRequest.prototype.open;
+      var originalSend = XMLHttpRequest.prototype.send;
+      XMLHttpRequest.prototype.open = function(method, url) {
+        this.__versionsJsonDisabled = isVersionsJson(url);
+        return originalOpen.apply(this, arguments);
+      };
+      XMLHttpRequest.prototype.send = function(body) {
+        if (this.__versionsJsonDisabled) {
+          this.readyState = 4;
+          this.status = 200;
+          this.responseText = versionData;
+          this.response = versionData;
+          this.dispatchEvent(new Event('readystatechange'));
+          this.dispatchEvent(new Event('load'));
+          return;
+        }
+        return originalSend.apply(this, arguments);
+      };
+    }
+  }
+})();
+</script>
     
       
 
@@ -69,7 +123,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,10 +146,14 @@
       </div>
     
     
-      <header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header"><a href="../../../.." title="GeoServer Documentation" class="md-header__button md-logo" aria-label="GeoServer Documentation" data-md-component="logo">
       
-  <img src="../../../../img/geoserver-logo.png" alt="logo">
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header"><a href="../../../.." title="Documentation" class="md-header__button md-logo" aria-label="Documentation" data-md-component="logo">
+      
+  <img src="../../../../img/geoserver-logo.svg" alt="logo">
 
     </a><label class="md-header__button md-icon" for="__drawer">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
@@ -103,7 +161,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            GeoServer Documentation
+            Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -119,7 +177,7 @@
         <form class="md-header__option" data-md-component="palette">
           
             
-            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
             
               <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -127,7 +185,7 @@
             
           
             
-            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
             
               <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -331,12 +389,12 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="GeoServer Documentation" class="md-nav__button md-logo" aria-label="GeoServer Documentation" data-md-component="logo">
+    <a href="../../../.." title="Documentation" class="md-nav__button md-logo" aria-label="Documentation" data-md-component="logo">
       
-  <img src="../../../../img/geoserver-logo.png" alt="logo">
+  <img src="../../../../img/geoserver-logo.svg" alt="logo">
 
     </a>
-    GeoServer Documentation
+    Documentation
   </label>
   
     <div class="md-nav__source">
@@ -901,14 +959,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/upgrade/" class="md-nav__link">
+      <a href="../../installation/upgrade3/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Upgrading GeoServer
+    Upgrading GeoServer 3
   
 
     
@@ -1535,14 +1593,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data/webadmin/layerpreview/" class="md-nav__link">
+      <a href="../../data/webadmin/browselayers/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Layer Preview
+    Browse Layers
   
 
     
@@ -2119,7 +2177,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    ImageMosaic configuration
   
 
     
@@ -3574,9 +3632,9 @@
     
       
         
-      
-        
           
+        
+      
         
       
         
@@ -3606,7 +3664,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../styling/webadmin/" class="md-nav__link ">
+            <a href="../../styling/" class="md-nav__link ">
               
   
   
@@ -3642,20 +3700,22 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../styling/index.md" class="md-nav__link">
+      <a href="../../styling/webadmin/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Styles
   
 
     
@@ -3670,8 +3730,6 @@
               
             
               
-            
-              
                 
   
   
@@ -3680,6 +3738,8 @@
     
     
       
+        
+          
         
       
         
@@ -3710,8 +3770,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3" id="__nav_2_7_3_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/sld/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -3725,8 +3786,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3" id="__nav_2_7_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3">
@@ -3739,32 +3806,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/sld/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -3833,6 +3874,8 @@
     
       
         
+          
+        
       
         
       
@@ -3856,8 +3899,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_4" id="__nav_2_7_3_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/sld/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -3871,8 +3915,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_4" id="__nav_2_7_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_4">
@@ -3885,32 +3935,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/sld/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -4127,14 +4151,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/reference/sld.md" class="md-nav__link">
+      <a href="../../styling/sld/reference/sld/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    StyledLayerDescriptor
   
 
     
@@ -4155,14 +4179,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/reference/layers.md" class="md-nav__link">
+      <a href="../../styling/sld/reference/layers/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Layers
   
 
     
@@ -4183,14 +4207,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/reference/styles.md" class="md-nav__link">
+      <a href="../../styling/sld/reference/styles/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Styles
   
 
     
@@ -4267,14 +4291,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/reference/pointsymbolizer.md" class="md-nav__link">
+      <a href="../../styling/sld/reference/pointsymbolizer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    PointSymbolizer
   
 
     
@@ -4323,14 +4347,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/reference/polygonsymbolizer.md" class="md-nav__link">
+      <a href="../../styling/sld/reference/polygonsymbolizer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    PolygonSymbolizer
   
 
     
@@ -4446,6 +4470,8 @@
     
       
         
+          
+        
       
         
       
@@ -4483,8 +4509,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_6" id="__nav_2_7_3_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/sld/extensions/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -4498,8 +4525,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_6" id="__nav_2_7_3_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_3_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_6">
@@ -4512,32 +4545,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/sld/extensions/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -4774,6 +4781,8 @@
     
       
         
+          
+        
       
         
       
@@ -4795,8 +4804,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_6_10" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_6_10" id="__nav_2_7_3_6_10_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/sld/extensions/composite-blend/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -4810,8 +4820,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_6_10" id="__nav_2_7_3_6_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_7_3_6_10_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_6_10">
@@ -4824,32 +4840,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/sld/extensions/composite-blend/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -4887,14 +4877,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/extensions/composite-blend/modes.md" class="md-nav__link">
+      <a href="../../styling/sld/extensions/composite-blend/modes/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Composite and blending modes
   
 
     
@@ -4954,6 +4944,8 @@
     
       
         
+          
+        
       
         
       
@@ -4973,8 +4965,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_6_11" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_6_11" id="__nav_2_7_3_6_11_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/sld/extensions/z-order/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -4988,8 +4981,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_6_11" id="__nav_2_7_3_6_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_7_3_6_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_6_11">
@@ -5002,32 +5001,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/sld/extensions/z-order/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -5101,14 +5074,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/extensions/rendering-selection.md" class="md-nav__link">
+      <a href="../../styling/sld/extensions/rendering-selection/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Rendering Selection
   
 
     
@@ -5270,14 +5243,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/sld/language.md" class="md-nav__link">
+      <a href="../../styling/sld/language/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    i18N in SLD
   
 
     
@@ -5337,6 +5310,8 @@
     
       
         
+          
+        
       
         
       
@@ -5382,8 +5357,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_5" id="__nav_2_7_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/css/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -5397,8 +5373,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_5" id="__nav_2_7_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_5">
@@ -5411,32 +5393,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/css/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -5530,14 +5486,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/css/metadata.md" class="md-nav__link">
+      <a href="../../styling/css/metadata/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Metadata
   
 
     
@@ -5558,14 +5514,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/css/multivalueprops.md" class="md-nav__link">
+      <a href="../../styling/css/multivalueprops/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Multi-valued properties
   
 
     
@@ -5698,14 +5654,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/css/nested.md" class="md-nav__link">
+      <a href="../../styling/css/nested/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Nested rules
   
 
     
@@ -5754,14 +5710,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/css/multilayer.md" class="md-nav__link">
+      <a href="../../styling/css/multilayer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Multiple layers in the same CSS
   
 
     
@@ -5813,6 +5769,8 @@
     
       
         
+          
+        
       
         
       
@@ -5836,8 +5794,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_5_15" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_5_15" id="__nav_2_7_5_15_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/css/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -5851,8 +5810,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_5_15" id="__nav_2_7_5_15_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_5_15_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_5_15">
@@ -5865,32 +5830,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/css/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6023,6 +5962,8 @@
     
       
         
+          
+        
       
         
       
@@ -6048,8 +5989,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_5_16" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_5_16" id="__nav_2_7_5_16_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/css/examples/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -6063,8 +6005,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_5_16" id="__nav_2_7_5_16_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_5_16_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_5_16">
@@ -6077,32 +6025,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/css/examples/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6271,6 +6193,8 @@
     
       
         
+          
+        
       
         
       
@@ -6294,8 +6218,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_6" id="__nav_2_7_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/ysld/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -6309,8 +6234,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_6" id="__nav_2_7_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_6">
@@ -6323,32 +6254,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/ysld/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6417,15 +6322,15 @@
     
       
         
-      
-        
-      
-        
-      
-        
-      
-        
           
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -6463,7 +6368,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../styling/ysld/reference/symbolizers/" class="md-nav__link ">
+            <a href="../../styling/ysld/reference/" class="md-nav__link ">
               
   
   
@@ -6498,32 +6403,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/ysld/reference/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6610,6 +6489,32 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../styling/ysld/reference/symbolizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symbolizers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -6910,6 +6815,8 @@
     
       
         
+          
+        
       
         
       
@@ -6933,8 +6840,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_6_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_6_5" id="__nav_2_7_6_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/ysld/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -6948,8 +6856,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_6_5" id="__nav_2_7_6_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_6_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_6_5">
@@ -6962,32 +6876,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/ysld/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -7128,6 +7016,8 @@
     
       
         
+          
+        
       
         
       
@@ -7151,8 +7041,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_7" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_7" id="__nav_2_7_7_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/mbstyle/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -7166,8 +7057,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_7" id="__nav_2_7_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_7">
@@ -7181,32 +7078,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/mbstyle/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -7215,14 +7086,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/mbstyle/installing.md" class="md-nav__link">
+      <a href="../../styling/mbstyle/installing/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Installing the GeoServer MBStyle extension
   
 
     
@@ -7271,7 +7142,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../styling/mbstyle/reference/index.md" class="md-nav__link">
+      <a href="../../styling/mbstyle/reference/" class="md-nav__link">
         
   
   
@@ -7302,6 +7173,8 @@
     
       
         
+          
+        
       
         
       
@@ -7323,8 +7196,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_7_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_7_5" id="__nav_2_7_7_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/mbstyle/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -7338,8 +7212,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_7_5" id="__nav_2_7_7_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_7_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_7_5">
@@ -7352,32 +7232,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/mbstyle/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -7565,6 +7419,8 @@
     
       
         
+          
+        
       
         
       
@@ -7584,8 +7440,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_2" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_2" id="__nav_2_7_8_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/workshop/setup/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -7599,8 +7456,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_2" id="__nav_2_7_8_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_2">
@@ -7613,32 +7476,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/workshop/setup/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -7848,6 +7685,8 @@
     
       
         
+          
+        
       
         
       
@@ -7875,8 +7714,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_4" id="__nav_2_7_8_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/workshop/css/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -7890,8 +7730,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_4" id="__nav_2_7_8_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_4">
@@ -7904,32 +7750,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/workshop/css/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8118,6 +7938,8 @@
     
       
         
+          
+        
       
         
       
@@ -8145,8 +7967,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_5" id="__nav_2_7_8_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/workshop/ysld/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -8160,8 +7983,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_5" id="__nav_2_7_8_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_5">
@@ -8174,32 +8003,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/workshop/ysld/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8388,6 +8191,8 @@
     
       
         
+          
+        
       
         
       
@@ -8415,8 +8220,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_6" id="__nav_2_7_8_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../styling/workshop/mbstyle/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -8430,8 +8236,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_6" id="__nav_2_7_8_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_6">
@@ -8444,32 +8256,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../styling/workshop/mbstyle/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8865,14 +8651,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wms/basics.md" class="md-nav__link">
+      <a href="../../services/wms/basics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WMS basics
   
 
     
@@ -9033,14 +8819,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wms/configuration.md" class="md-nav__link">
+      <a href="../../services/wms/configuration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WMS configuration
   
 
     
@@ -9061,14 +8847,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wms/global.md" class="md-nav__link">
+      <a href="../../services/wms/global/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Global variables affecting WMS
   
 
     
@@ -9372,14 +9158,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wfs/schemamapping.md" class="md-nav__link">
+      <a href="../../services/wfs/schemamapping/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WFS schema mapping
   
 
     
@@ -9439,6 +9225,8 @@
     
       
         
+          
+        
       
         
       
@@ -9464,8 +9252,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_4" id="__nav_2_8_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../services/features/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -9479,8 +9268,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_4" id="__nav_2_8_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_4">
@@ -9493,32 +9288,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../services/features/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -9612,14 +9381,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/features/status.md" class="md-nav__link">
+      <a href="../../services/features/status/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    OGC API - Features Implementation status
   
 
     
@@ -9679,6 +9448,8 @@
     
       
         
+          
+        
       
         
       
@@ -9710,8 +9481,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_5" id="__nav_2_8_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../services/wcs/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -9725,8 +9497,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_5" id="__nav_2_8_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_5">
@@ -9739,32 +9517,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../services/wcs/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -9830,14 +9582,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wcs/basics.md" class="md-nav__link">
+      <a href="../../services/wcs/basics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WCS basics
   
 
     
@@ -10009,6 +9761,8 @@
     
       
         
+          
+        
       
         
       
@@ -10026,8 +9780,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_6" id="__nav_2_8_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../services/wmts/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -10041,8 +9796,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_6" id="__nav_2_8_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_6">
@@ -10055,32 +9816,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../services/wmts/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -10416,14 +10151,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wps/processes/geo.md" class="md-nav__link">
+      <a href="../../services/wps/processes/geo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Geometry Processes
   
 
     
@@ -10508,14 +10243,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../services/wps/hazelcast-clustering.md" class="md-nav__link">
+      <a href="../../services/wps/hazelcast-clustering/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Hazelcast based process status clustering
   
 
     
@@ -10547,6 +10282,8 @@
     
       
         
+          
+        
       
         
       
@@ -10568,8 +10305,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_8" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_8" id="__nav_2_8_8_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../services/csw/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -10583,8 +10321,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_8" id="__nav_2_8_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_8">
@@ -10597,32 +10341,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../services/csw/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -11378,7 +11096,7 @@
   <a href="#logging_location" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overriding the log location setup in the GeoServer configuration
+        Configuring the log location
       
     </span>
   </a>
@@ -12617,7 +12335,7 @@
   <span class="md-ellipsis">
     
   
-    Rest
+    REST
   
 
     
@@ -12639,7 +12357,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Rest
+    REST
   
 
           </label>
@@ -13136,6 +12854,8 @@
       
         
       
+        
+      
     
     
     
@@ -13399,6 +13119,34 @@
     
   
     Coverages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rest/api/crs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinate Reference Systems
   
 
     
@@ -14089,6 +13837,8 @@
     
       
         
+          
+        
       
         
       
@@ -14120,8 +13870,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14_2" >
         
           
-          <label class="md-nav__link" for="__nav_2_14_2" id="__nav_2_14_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../security/webadmin/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -14135,8 +13886,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_14_2" id="__nav_2_14_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_14_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_14_2">
@@ -14149,32 +13906,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../security/webadmin/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -14419,6 +14150,8 @@
     
       
         
+          
+        
       
         
       
@@ -14446,8 +14179,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14_3" >
         
           
-          <label class="md-nav__link" for="__nav_2_14_3" id="__nav_2_14_3_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../security/usergrouprole/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -14461,8 +14195,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_14_3" id="__nav_2_14_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_14_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_14_3">
@@ -14476,32 +14216,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../security/usergrouprole/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -14510,14 +14224,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/usergrouprole/usergroups.md" class="md-nav__link">
+      <a href="../../security/usergrouprole/usergroups/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Users and Groups
   
 
     
@@ -14566,14 +14280,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/usergrouprole/roles.md" class="md-nav__link">
+      <a href="../../security/usergrouprole/roles/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Roles
   
 
     
@@ -14622,14 +14336,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../security/usergrouprole/rolesource.md" class="md-nav__link">
+      <a href="../../security/usergrouprole/rolesource/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Role source and role calculation
   
 
     
@@ -15134,9 +14848,9 @@
     
       
         
-      
-        
           
+        
+      
         
       
         
@@ -15168,7 +14882,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../security/tutorials/ldap/" class="md-nav__link ">
+            <a href="../../security/tutorials/" class="md-nav__link ">
               
   
   
@@ -15204,20 +14918,22 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../security/tutorials/index.md" class="md-nav__link">
+      <a href="../../security/tutorials/ldap/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Authentication with LDAP
   
 
     
@@ -15229,8 +14945,6 @@
     </li>
   
 
-              
-            
               
             
               
@@ -15494,7 +15208,7 @@
   <span class="md-ellipsis">
     
   
-    Geowebcache
+    GeoWebCache
   
 
     
@@ -15516,7 +15230,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Geowebcache
+    GeoWebCache
   
 
           </label>
@@ -20225,7 +19939,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    Getting Started
   
 
     
@@ -20281,7 +19995,7 @@
   <span class="md-ellipsis">
     
   
-    Advanced
+    Advanced Configuration
   
 
     
@@ -20672,6 +20386,8 @@
       
         
           
+        
+      
         
       
         
@@ -21659,6 +21375,139 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../community/duckdb/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DuckDB
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_17_8" id="__nav_2_17_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DuckDB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../community/duckdb/installing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing the DuckDB Extension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../community/duckdb/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuring a DuckDB Data Store
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../community/elasticsearch/" class="md-nav__link">
         
@@ -21745,7 +21594,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_11" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -21767,14 +21616,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_10" id="__nav_2_17_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_11" id="__nav_2_17_11_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_10">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_11">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -21912,7 +21761,7 @@
   <span class="md-ellipsis">
     
   
-    Features Templatring Rest API
+    Features Templating Rest API
   
 
     
@@ -21988,7 +21837,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_12" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22010,14 +21859,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_11" id="__nav_2_17_11_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_12" id="__nav_2_17_12_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_12">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22121,7 +21970,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_14" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22143,14 +21992,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_13" id="__nav_2_17_13_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_14" id="__nav_2_17_14_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_14">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22254,7 +22103,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_14" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_15" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22276,14 +22125,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_14" id="__nav_2_17_14_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_15" id="__nav_2_17_15_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_14">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_15">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22475,7 +22324,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_19" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22497,14 +22346,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_18" id="__nav_2_17_18_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_19" id="__nav_2_17_19_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_18">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22628,10 +22477,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_18_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_19_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_17_18_5" id="__nav_2_17_18_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_17_19_5" id="__nav_2_17_19_5_label" tabindex="0">
             
   
   
@@ -22649,8 +22498,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_17_18_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_18_5">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_17_19_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_19_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23012,7 +22861,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_26" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_27" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23034,14 +22883,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_26" id="__nav_2_17_26_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_27" id="__nav_2_17_27_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_26_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_26">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_27_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_27">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23145,7 +22994,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_27" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_28" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23167,14 +23016,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_27" id="__nav_2_17_27_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_28" id="__nav_2_17_28_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_27_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_27">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_28_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_28">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23265,12 +23114,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
     
     
     
@@ -23282,7 +23125,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_28" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_29" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23304,14 +23147,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_28" id="__nav_2_17_28_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_29" id="__nav_2_17_29_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_28_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_28">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_29_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_29">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23338,90 +23181,6 @@
     
   
     Installation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/jms-cluster/activemq/activemqBroker.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/jms-cluster/activemq/JDBC.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/jms-cluster/activemq/SharedFolder.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
   
 
     
@@ -23473,7 +23232,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_29" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_30" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23495,14 +23254,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_29" id="__nav_2_17_29_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_30" id="__nav_2_17_30_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_29_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_29">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_30_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_30">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23664,7 +23423,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_31" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_32" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23686,14 +23445,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_31" id="__nav_2_17_31_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_32" id="__nav_2_17_32_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_31_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_31">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_32_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_32">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23827,7 +23586,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_32" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_33" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23849,14 +23608,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_32" id="__nav_2_17_32_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_33" id="__nav_2_17_33_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_32_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_32">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_33_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_33">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23990,7 +23749,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_33" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_34" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24012,14 +23771,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_33" id="__nav_2_17_33_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_34" id="__nav_2_17_34_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_33_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_33">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_34_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_34">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24247,7 +24006,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_37" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_38" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24269,14 +24028,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_37" id="__nav_2_17_37_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_38" id="__nav_2_17_38_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_37_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_37">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_38_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_38">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24590,7 +24349,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_39" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_40" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24612,14 +24371,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_39" id="__nav_2_17_39_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_40" id="__nav_2_17_40_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_39_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_39">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_40_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_40">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24919,7 +24678,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_40" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_41" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24941,14 +24700,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_40" id="__nav_2_17_40_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_41" id="__nav_2_17_41_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_40_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_40">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_41_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_41">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25030,6 +24789,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../community/png-wind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PNG/Wind community module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -25052,7 +24839,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_41" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_43" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25074,14 +24861,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_41" id="__nav_2_17_41_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_43" id="__nav_2_17_43_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_41_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_41">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_43_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_43">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25163,216 +24950,6 @@
   
   
   
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_42" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_17_42" id="__nav_2_17_42_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    WPS Remote community module
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_42_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_42">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    WPS Remote community module
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/remote-wps/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/remote-wps/install_geoserver.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/remote-wps/install_xmpp.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/remote-wps/install_python.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../community/remote-wps/running_example.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
       <a href="../../community/s3-geotiff/" class="md-nav__link">
         
@@ -25423,7 +25000,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_44" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_45" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25445,14 +25022,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_44" id="__nav_2_17_44_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_45" id="__nav_2_17_45_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_44_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_44">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_45_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_45">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25584,7 +25161,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_46" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_47" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25606,14 +25183,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_46" id="__nav_2_17_46_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_47" id="__nav_2_17_47_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_46_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_46">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_47_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_47">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25721,7 +25298,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_47" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_48" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25743,14 +25320,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_47" id="__nav_2_17_47_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_48" id="__nav_2_17_48_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_47_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_47">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_48_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_48">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25832,7 +25409,7 @@
   <span class="md-ellipsis">
     
   
-    Schema
+    Opt. 1: Removing Redundant Schema Information
   
 
     
@@ -25860,7 +25437,7 @@
   <span class="md-ellipsis">
     
   
-    Attributes
+    Opt. 2: Removing Redundant Attribute Values
   
 
     
@@ -25910,7 +25487,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_48" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_49" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25932,14 +25509,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_48" id="__nav_2_17_48_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_49" id="__nav_2_17_49_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_48_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_48">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_49_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_49">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26045,7 +25622,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_49" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_50" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26067,14 +25644,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_49" id="__nav_2_17_49_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_50" id="__nav_2_17_50_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_49_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_49">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_50_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_50">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26208,7 +25785,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_50" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_51" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26230,14 +25807,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_50" id="__nav_2_17_50_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_51" id="__nav_2_17_51_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_50_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_50">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_51_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_51">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26373,7 +25950,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_51" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_52" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26395,14 +25972,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_51" id="__nav_2_17_51_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_52" id="__nav_2_17_52_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_51_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_51">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_52_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_52">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26590,7 +26167,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_53" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_54" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26612,14 +26189,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_53" id="__nav_2_17_53_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_54" id="__nav_2_17_54_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_53_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_53">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_54_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_54">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26723,7 +26300,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_54" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_55" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26745,14 +26322,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_54" id="__nav_2_17_54_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_55" id="__nav_2_17_55_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_54_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_54">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_55_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_55">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26856,7 +26433,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_55" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_56" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26878,14 +26455,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_55" id="__nav_2_17_55_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_56" id="__nav_2_17_56_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_55_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_55">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_56_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_56">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -27098,6 +26675,8 @@
       
         
       
+        
+      
     
     
     
@@ -27216,6 +26795,8 @@
     
       
         
+          
+        
       
         
       
@@ -27237,8 +26818,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_18_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_18_4" id="__nav_2_18_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tutorials/GetFeatureInfo/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -27252,8 +26834,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_18_4" id="__nav_2_18_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_18_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_18_4">
@@ -27266,32 +26854,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../tutorials/GetFeatureInfo/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -27357,14 +26919,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/GetFeatureInfo/raster.md" class="md-nav__link">
+      <a href="../../tutorials/GetFeatureInfo/raster/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Raster GetFeatureInfo Response Customization
   
 
     
@@ -27701,14 +27263,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/jboss/jboss_tutorial.md" class="md-nav__link">
+      <a href="../../tutorials/tomcat-hardening/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Tomcat hardening
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/jboss/jboss_tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geoserver on JBoss
   
 
     
@@ -29051,7 +28641,7 @@
   <span class="md-ellipsis">
     
   
-    Wps Services
+    WPS Services
   
 
     
@@ -29073,7 +28663,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Wps Services
+    WPS Services
   
 
           </label>
@@ -29921,8 +29511,6 @@
       
         
       
-        
-      
     
     
     
@@ -30066,62 +29654,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../docguide/install/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installing Sphinx
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../docguide/installlatex/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installing LaTeX
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../docguide/workflow/" class="md-nav__link">
         
   
@@ -30130,6 +29662,34 @@
     
   
     Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../docguide/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing MkDocs
   
 
     
@@ -30370,7 +29930,7 @@
   <a href="#logging_location" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overriding the log location setup in the GeoServer configuration
+        Configuring the log location
       
     </span>
   </a>
@@ -30427,72 +29987,6 @@
           
             <div class="md-content" data-md-component="content">
               
-                
-
-
-
-  
-
-
-  <nav class="md-path" aria-label="Navigation" >
-    <ol class="md-path__list">
-      
-        
-  
-  
-    <li class="md-path__item">
-      <a href="../../../.." class="md-path__link">
-        
-  <span class="md-ellipsis">
-    Home
-  </span>
-
-      </a>
-    </li>
-  
-
-      
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../../" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    User Manual
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Server configuration
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ol>
-  </nav>
-
-              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -30515,7 +30009,7 @@
 <li>GeoWebCache loggers record the activity of the tile protocol library used by GeoServer.</li>
 <li>GeoTools loggers record the activity of the data access and rendering library used by GeoServer.</li>
 <li>The appender <code>stdout</code> is setup as a Console appender sending information to standard output, based on <strong>Log to Stdout</strong> <a href="../globalsettings/#config_globalsettings_log_stdout">global settings</a>.</li>
-<li>The appender <code>geoserverlogfile</code> is setup as a FileAppender or RollingFile appender sending information to the <strong>Log location</strong> <a href="../globalsettings/#config_globalsettings_log_location">global settings</a>.</li>
+<li>The appender <code>geoserverlogfile</code> is setup as a FileAppender or RollingFile appender sending information to the <strong>Log location</strong> set using the <code>GEOSERVER_LOG_LOCATION</code> application property.</li>
 <li>Logging levels range from:</li>
 <li>Failure (<code>FATAL</code>, <code>ERROR</code>, <code>WARN</code>) levels</li>
 <li>Operational (<code>INFO</code>, <code>CONFIG</code>) levels</li>
@@ -30614,144 +30108,28 @@
 <li>Custom levels are available for <code>CONFIG</code> and <code>FINEST</code> levels.</li>
 <li>Appenders are used to output logging information, with GeoServer providing external configuration for appenders named <code>geoserverlogfile</code> and <code>stdout</code>.</li>
 <li>
-<p>Always include a <code>geoserverlogfile</code> <code>FileAppender</code> or <code>RollingFile</code> appender that GeoServer will configure to work against the location configured in the <a href="../globalsettings/#config_globalsettings_log_location">global settings</a>.</p>
+<p>Always include a <code>geoserverlogfile</code> <code>FileAppender</code> or <code>RollingFile</code> appender that GeoServer will configure to work against the location configured using the <code>GEOSERVER_LOG_LOCATION</code> application property.</p>
 <p>Care is taken to preserve your file extension when updating <code>&lt;filename&gt;</code> location, so if you wish to log to <strong><code>access_logs.txt</code></strong> you may do so, and the <strong><code>txt</code></strong> extension will be preserved.</p>
 </li>
 <li>
 <p>When setting <code>geoserverlogfile</code> appender as <code>RollingFile</code> appender, care is taken to preserve your <code>&lt;filePattern&gt;</code> extensions, which must align with the roll over strategies configured.</p>
 <p>As an example <code>-%i</code> is used with DefaultRolloverStrategy to produce a maximum of <code>3</code> backup files.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="cm">&lt;!-- This log4j configuration file needs to stay here, and is used as the default logging setup --&gt;</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="cm">&lt;!-- during data_dir upgrades and in case the chosen logging config isn&#39;t available.            --&gt;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">&lt;Configuration</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEFAULT_LOGGING&quot;</span><span class="w"> </span><span class="na">status=</span><span class="s">&quot;fatal&quot;</span><span class="w"> </span><span class="na">dest=</span><span class="s">&quot;out&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&lt;Appenders&gt;</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nt">&lt;Console</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;stdout&quot;</span><span class="w"> </span><span class="na">target=</span><span class="s">&quot;SYSTEM_OUT&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">            </span><span class="nt">&lt;PatternLayout</span><span class="w"> </span><span class="na">pattern=</span><span class="s">&quot;%date{dd MMM HH:mm:ss} %-6level [%logger{2}] - %msg%n%throwable{filters(org.junit,org.apache.maven,sun.reflect,java.lang.reflect)}&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nt">&lt;/Console&gt;</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nt">&lt;RollingFile</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">            </span><span class="nt">&lt;filename&gt;</span>logs/geoserver.log<span class="nt">&lt;/filename&gt;</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">            </span><span class="nt">&lt;filePattern&gt;</span>logs/geoserver-%i.log<span class="nt">&lt;/filePattern&gt;</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">            </span><span class="nt">&lt;PatternLayout</span><span class="w"> </span><span class="na">pattern=</span><span class="s">&quot;%date{dd MMM HH:mm:ss} %-6level [%logger{2}] - %msg%n%throwable{filters(org.junit,org.apache.maven,sun.reflect,java.lang.reflect)}&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">            </span><span class="nt">&lt;Policies&gt;</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">                </span><span class="nt">&lt;SizeBasedTriggeringPolicy</span><span class="w"> </span><span class="na">size=</span><span class="s">&quot;20 MB&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">            </span><span class="nt">&lt;/Policies&gt;</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">            </span><span class="nt">&lt;DefaultRolloverStrategy</span><span class="w"> </span><span class="na">max=</span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="na">fileIndex=</span><span class="s">&quot;min&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span><span class="nt">&lt;/RollingFile&gt;</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="nt">&lt;/Appenders&gt;</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="nt">&lt;Loggers&gt;</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geotools&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geotools.factory&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geoserver&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geoserver.config&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.vfny.geoserver&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
-<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.springframework&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;ERROR&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>
-<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.springframework.context.support&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;ERROR&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>
-<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geowebcache&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geowebcache.seed&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="w">        </span><span class="nt">&lt;Root</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="w">        </span><span class="nt">&lt;/Root&gt;</span>
-<a id="__codelineno-1-63" name="__codelineno-1-63" href="#__codelineno-1-63"></a><span class="w">    </span><span class="nt">&lt;/Loggers&gt;</span>
-<a id="__codelineno-1-64" name="__codelineno-1-64" href="#__codelineno-1-64"></a><span class="nt">&lt;/Configuration&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">&lt;RollingFile</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nt">&lt;filename&gt;</span>logs/geoserver.log<span class="nt">&lt;/filename&gt;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&lt;filePattern&gt;</span>logs/geoserver-%i.log<span class="nt">&lt;/filePattern&gt;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">&lt;PatternLayout</span><span class="w"> </span><span class="na">pattern=</span><span class="s">&quot;%date{dd MMM HH:mm:ss} %-6level [%logger{2}] - %msg%n%throwable{filters(org.junit,org.apache.maven,sun.reflect,java.lang.reflect)}&quot;</span><span class="nt">/&gt;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&lt;Policies&gt;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nt">&lt;SizeBasedTriggeringPolicy</span><span class="w"> </span><span class="na">size=</span><span class="s">&quot;20 MB&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">&lt;/Policies&gt;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">&lt;DefaultRolloverStrategy</span><span class="w"> </span><span class="na">max=</span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="na">fileIndex=</span><span class="s">&quot;min&quot;</span><span class="nt">/&gt;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nt">&lt;/RollingFile&gt;</span>
 </code></pre></div>
 </li>
 <li>
 <p>a <code>Console</code> appender writing to the standard output should be called <code>stdout</code> and again GeoServer will enable/disable it according to the configuration set in the <a href="../globalsettings/#config_globalsettings_log_stdout">global settings</a></p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cm">&lt;!-- This log4j configuration file needs to stay here, and is used as the default logging setup --&gt;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cm">&lt;!-- during data_dir upgrades and in case the chosen logging config isn&#39;t available.            --&gt;</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">&lt;Configuration</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;DEFAULT_LOGGING&quot;</span><span class="w"> </span><span class="na">status=</span><span class="s">&quot;fatal&quot;</span><span class="w"> </span><span class="na">dest=</span><span class="s">&quot;out&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">&lt;Appenders&gt;</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="nt">&lt;Console</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;stdout&quot;</span><span class="w"> </span><span class="na">target=</span><span class="s">&quot;SYSTEM_OUT&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">            </span><span class="nt">&lt;PatternLayout</span><span class="w"> </span><span class="na">pattern=</span><span class="s">&quot;%date{dd MMM HH:mm:ss} %-6level [%logger{2}] - %msg%n%throwable{filters(org.junit,org.apache.maven,sun.reflect,java.lang.reflect)}&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nt">&lt;/Console&gt;</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="nt">&lt;RollingFile</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">            </span><span class="nt">&lt;filename&gt;</span>logs/geoserver.log<span class="nt">&lt;/filename&gt;</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">            </span><span class="nt">&lt;filePattern&gt;</span>logs/geoserver-%i.log<span class="nt">&lt;/filePattern&gt;</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">            </span><span class="nt">&lt;PatternLayout</span><span class="w"> </span><span class="na">pattern=</span><span class="s">&quot;%date{dd MMM HH:mm:ss} %-6level [%logger{2}] - %msg%n%throwable{filters(org.junit,org.apache.maven,sun.reflect,java.lang.reflect)}&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">            </span><span class="nt">&lt;Policies&gt;</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">                </span><span class="nt">&lt;SizeBasedTriggeringPolicy</span><span class="w"> </span><span class="na">size=</span><span class="s">&quot;20 MB&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">            </span><span class="nt">&lt;/Policies&gt;</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">            </span><span class="nt">&lt;DefaultRolloverStrategy</span><span class="w"> </span><span class="na">max=</span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="na">fileIndex=</span><span class="s">&quot;min&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">&lt;/RollingFile&gt;</span>
-<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="nt">&lt;/Appenders&gt;</span>
-<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="nt">&lt;Loggers&gt;</span>
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geotools&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geotools.factory&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geoserver&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geoserver.config&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.vfny.geoserver&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>
-<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.springframework&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;ERROR&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>
-<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.springframework.context.support&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;ERROR&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>
-<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geowebcache&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;CONFIG&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">        </span><span class="nt">&lt;Logger</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;org.geowebcache.seed&quot;</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="w"> </span><span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="w">        </span><span class="nt">&lt;/Logger&gt;</span>
-<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a><span class="w">        </span><span class="nt">&lt;Root</span><span class="w"> </span><span class="na">level=</span><span class="s">&quot;warn&quot;</span><span class="nt">&gt;</span>
-<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;stdout&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="w">            </span><span class="nt">&lt;AppenderRef</span><span class="w"> </span><span class="na">ref=</span><span class="s">&quot;geoserverlogfile&quot;</span><span class="nt">/&gt;</span>
-<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="w">        </span><span class="nt">&lt;/Root&gt;</span>
-<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a><span class="w">    </span><span class="nt">&lt;/Loggers&gt;</span>
-<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a><span class="nt">&lt;/Configuration&gt;</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">&lt;Console</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;stdout&quot;</span><span class="w"> </span><span class="na">target=</span><span class="s">&quot;SYSTEM_OUT&quot;</span><span class="nt">&gt;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&lt;PatternLayout</span><span class="w"> </span><span class="na">pattern=</span><span class="s">&quot;%date{dd MMM HH:mm:ss} %-6level [%logger{2}] - %msg%n%throwable{filters(org.junit,org.apache.maven,sun.reflect,java.lang.reflect)}&quot;</span><span class="nt">/&gt;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">&lt;/Console&gt;</span>
 </code></pre></div>
 - Loggers are used to collect messages from geoserver components, and individual libraries used.
   - GeoServer Logger names match up with the package names in the project javadocs overview (available for download).</p>
@@ -30811,7 +30189,7 @@
 </tr>
 <tr>
 <td>TRACE</td>
-<td>Metod by method tracing of execution</td>
+<td>Method by method tracing of execution</td>
 </tr>
 <tr>
 <td>FINEST</td>
@@ -30875,17 +30253,14 @@
 <p>This result provides minimal feedback to the console, only reporting when GeoServer encounters an error.</p>
 </li>
 </ol>
-<h2 id="logging_location">Overriding the log location setup in the GeoServer configuration<a class="headerlink" href="#logging_location" title="Permanent link">&para;</a></h2>
-<p>When setting up a cluster of GeoServer machines it is common to share a single data directory among all the cluster nodes.</p>
-<p>There is however a gotcha, all nodes would end up writing the logs in the same file, which would cause various kinds of troubles depending on the operating system file locking rules (a single server might be able to write, or all together in an uncontrolled manner resulting in an unreadable log file).</p>
-<p>A common choice could be to use the machine name as a distinction, setting values such as <code>logs/geoserver_node1.log</code>, <code>logs/geoserver_node2.log</code> and so on: in this case all the log files would still be contained in the data directory and properly rotated, but each server would have its own separate log file to write on.</p>
-<p>In this case it is convenient to set a separate log location for each GeoServer node:</p>
-<ul>
-<li>The <code>GEOSERVER_LOG_LOCATION</code> parameter can be set as system property, environment variables, or servlet context parameters:</li>
-</ul>
+<h2 id="logging_location">Configuring the log location<a class="headerlink" href="#logging_location" title="Permanent link">&para;</a></h2>
+<p>The log file location is set using the <code>GEOSERVER_LOG_LOCATION</code> application property. This is the only way to configure the log location as of GeoServer 3.0 (the Admin Console and REST API no longer allow changing this setting).</p>
+<p>The <code>GEOSERVER_LOG_LOCATION</code> parameter can be set as system property, environment variables, or servlet context parameters:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="na">GEOSERVER_LOG_LOCATION</span><span class="o">=</span><span class="s">&lt;the location of the file&gt;</span>
 </code></pre></div>
-<p>This setting overrides global setting, and is applied to <code>geoserverlogfile</code> appender as a template for filename and filePattern.</p>
+<p>This setting is applied to <code>geoserverlogfile</code> appender as a template for filename and filePattern.</p>
+<p>When setting up a cluster of GeoServer machines it is common to share a single data directory among all the cluster nodes. All nodes would end up writing the logs in the same file, which would cause various kinds of troubles depending on the operating system file locking rules.</p>
+<p>A common choice is to use the machine name as a distinction, setting values such as <code>logs/geoserver_node1.log</code>, <code>logs/geoserver_node2.log</code> and so on: in this case all the log files would still be contained in the data directory and properly rotated, but each server would have its own separate log file to write on.</p>
 <ul>
 <li>This same effect may be obtained using Log4J <a href="https://logging.apache.org/log4j/2.x/manual/configuration.md#PropertySubstitution">property substitution</a>, where a wide range of <a href="https://logging.apache.org/log4j/2.x/manual/lookups.md">property lookups</a> are available.</li>
 </ul>
@@ -30953,6 +30328,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -31058,7 +30435,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.footer"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.indexes", "navigation.footer"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
       <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -25,7 +25,7 @@
     
     
       
-        <title>Polygons - GeoServer Documentation</title>
+        <title>Polygons - Documentation</title>
       
     
     
@@ -51,9 +51,63 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../../stylesheets/geoserver-brand.css">
+    
       <link rel="stylesheet" href="../../../../../../stylesheets/extra.css">
     
     <script>__md_scope=new URL("../../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script>
+(function() {
+  var host = location.hostname;
+  if (host === '127.0.0.1' || host === 'localhost' || host === '[::1]') {
+    var versionData = JSON.stringify({
+      default: 'latest',
+      versions: [
+        { version: 'latest', title: 'Latest', aliases: ['main', '3.0.x'], archive: false }
+      ]
+    });
+
+    function isVersionsJson(url) {
+      return typeof url === 'string' && url.indexOf('/versions.json') !== -1;
+    }
+
+    if (window.fetch) {
+      var originalFetch = window.fetch.bind(window);
+      window.fetch = function(resource, options) {
+        var url = typeof resource === 'string' ? resource : resource && resource.url;
+        if (isVersionsJson(url)) {
+          return Promise.resolve(new Response(versionData, {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          }));
+        }
+        return originalFetch(resource, options);
+      };
+    }
+
+    if (window.XMLHttpRequest) {
+      var originalOpen = XMLHttpRequest.prototype.open;
+      var originalSend = XMLHttpRequest.prototype.send;
+      XMLHttpRequest.prototype.open = function(method, url) {
+        this.__versionsJsonDisabled = isVersionsJson(url);
+        return originalOpen.apply(this, arguments);
+      };
+      XMLHttpRequest.prototype.send = function(body) {
+        if (this.__versionsJsonDisabled) {
+          this.readyState = 4;
+          this.status = 200;
+          this.responseText = versionData;
+          this.response = versionData;
+          this.dispatchEvent(new Event('readystatechange'));
+          this.dispatchEvent(new Event('load'));
+          return;
+        }
+        return originalSend.apply(this, arguments);
+      };
+    }
+  }
+})();
+</script>
     
       
 
@@ -69,7 +123,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -92,10 +146,14 @@
       </div>
     
     
-      <header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header"><a href="../../../../../.." title="GeoServer Documentation" class="md-header__button md-logo" aria-label="GeoServer Documentation" data-md-component="logo">
       
-  <img src="../../../../../../img/geoserver-logo.png" alt="logo">
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header"><a href="../../../../../.." title="Documentation" class="md-header__button md-logo" aria-label="Documentation" data-md-component="logo">
+      
+  <img src="../../../../../../img/geoserver-logo.svg" alt="logo">
 
     </a><label class="md-header__button md-icon" for="__drawer">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
@@ -103,7 +161,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            GeoServer Documentation
+            Documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -119,7 +177,7 @@
         <form class="md-header__option" data-md-component="palette">
           
             
-            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
             
               <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -127,7 +185,7 @@
             
           
             
-            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
             
               <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
@@ -331,12 +389,12 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../../../.." title="GeoServer Documentation" class="md-nav__button md-logo" aria-label="GeoServer Documentation" data-md-component="logo">
+    <a href="../../../../../.." title="Documentation" class="md-nav__button md-logo" aria-label="Documentation" data-md-component="logo">
       
-  <img src="../../../../../../img/geoserver-logo.png" alt="logo">
+  <img src="../../../../../../img/geoserver-logo.svg" alt="logo">
 
     </a>
-    GeoServer Documentation
+    Documentation
   </label>
   
     <div class="md-nav__source">
@@ -901,14 +959,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../installation/upgrade/" class="md-nav__link">
+      <a href="../../../../installation/upgrade3/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Upgrading GeoServer
+    Upgrading GeoServer 3
   
 
     
@@ -1535,14 +1593,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../data/webadmin/layerpreview/" class="md-nav__link">
+      <a href="../../../../data/webadmin/browselayers/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Layer Preview
+    Browse Layers
   
 
     
@@ -2119,7 +2177,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    ImageMosaic configuration
   
 
     
@@ -3576,9 +3634,9 @@
     
       
         
-      
-        
           
+        
+      
         
       
         
@@ -3608,7 +3666,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../webadmin/" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   
@@ -3644,20 +3702,22 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../../index.md" class="md-nav__link">
+      <a href="../../../webadmin/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Styles
   
 
     
@@ -3672,8 +3732,6 @@
               
             
               
-            
-              
                 
   
   
@@ -3682,6 +3740,8 @@
     
     
       
+        
+          
         
       
         
@@ -3712,8 +3772,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3" id="__nav_2_7_3_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sld/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -3727,8 +3788,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3" id="__nav_2_7_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3">
@@ -3741,32 +3808,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../sld/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -3835,6 +3876,8 @@
     
       
         
+          
+        
       
         
       
@@ -3858,8 +3901,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_4" id="__nav_2_7_3_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sld/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -3873,8 +3917,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_4" id="__nav_2_7_3_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_4">
@@ -3887,32 +3937,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../sld/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -4129,14 +4153,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/reference/sld.md" class="md-nav__link">
+      <a href="../../../sld/reference/sld/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    StyledLayerDescriptor
   
 
     
@@ -4157,14 +4181,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/reference/layers.md" class="md-nav__link">
+      <a href="../../../sld/reference/layers/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Layers
   
 
     
@@ -4185,14 +4209,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/reference/styles.md" class="md-nav__link">
+      <a href="../../../sld/reference/styles/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Styles
   
 
     
@@ -4269,14 +4293,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/reference/pointsymbolizer.md" class="md-nav__link">
+      <a href="../../../sld/reference/pointsymbolizer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    PointSymbolizer
   
 
     
@@ -4325,14 +4349,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/reference/polygonsymbolizer.md" class="md-nav__link">
+      <a href="../../../sld/reference/polygonsymbolizer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    PolygonSymbolizer
   
 
     
@@ -4448,6 +4472,8 @@
     
       
         
+          
+        
       
         
       
@@ -4485,8 +4511,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_6" id="__nav_2_7_3_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sld/extensions/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -4500,8 +4527,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_6" id="__nav_2_7_3_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_3_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_6">
@@ -4514,32 +4547,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../sld/extensions/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -4776,6 +4783,8 @@
     
       
         
+          
+        
       
         
       
@@ -4797,8 +4806,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_6_10" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_6_10" id="__nav_2_7_3_6_10_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sld/extensions/composite-blend/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -4812,8 +4822,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_6_10" id="__nav_2_7_3_6_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_7_3_6_10_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_6_10">
@@ -4826,32 +4842,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../sld/extensions/composite-blend/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -4889,14 +4879,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/extensions/composite-blend/modes.md" class="md-nav__link">
+      <a href="../../../sld/extensions/composite-blend/modes/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Composite and blending modes
   
 
     
@@ -4956,6 +4946,8 @@
     
       
         
+          
+        
       
         
       
@@ -4975,8 +4967,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_3_6_11" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_3_6_11" id="__nav_2_7_3_6_11_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../sld/extensions/z-order/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -4990,8 +4983,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_3_6_11" id="__nav_2_7_3_6_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_7_3_6_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_3_6_11">
@@ -5004,32 +5003,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../sld/extensions/z-order/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -5103,14 +5076,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/extensions/rendering-selection.md" class="md-nav__link">
+      <a href="../../../sld/extensions/rendering-selection/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Rendering Selection
   
 
     
@@ -5272,14 +5245,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../sld/language.md" class="md-nav__link">
+      <a href="../../../sld/language/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    i18N in SLD
   
 
     
@@ -5339,6 +5312,8 @@
     
       
         
+          
+        
       
         
       
@@ -5384,8 +5359,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_5" id="__nav_2_7_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../css/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -5399,8 +5375,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_5" id="__nav_2_7_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_5">
@@ -5413,32 +5395,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../css/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -5532,14 +5488,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../css/metadata.md" class="md-nav__link">
+      <a href="../../../css/metadata/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Metadata
   
 
     
@@ -5560,14 +5516,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../css/multivalueprops.md" class="md-nav__link">
+      <a href="../../../css/multivalueprops/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Multi-valued properties
   
 
     
@@ -5700,14 +5656,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../css/nested.md" class="md-nav__link">
+      <a href="../../../css/nested/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Nested rules
   
 
     
@@ -5756,14 +5712,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../css/multilayer.md" class="md-nav__link">
+      <a href="../../../css/multilayer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Multiple layers in the same CSS
   
 
     
@@ -5815,6 +5771,8 @@
     
       
         
+          
+        
       
         
       
@@ -5838,8 +5796,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_5_15" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_5_15" id="__nav_2_7_5_15_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../css/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -5853,8 +5812,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_5_15" id="__nav_2_7_5_15_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_5_15_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_5_15">
@@ -5867,32 +5832,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../css/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6025,6 +5964,8 @@
     
       
         
+          
+        
       
         
       
@@ -6050,8 +5991,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_5_16" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_5_16" id="__nav_2_7_5_16_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../css/examples/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -6065,8 +6007,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_5_16" id="__nav_2_7_5_16_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_5_16_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_5_16">
@@ -6079,32 +6027,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../css/examples/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6275,6 +6197,8 @@
     
       
         
+          
+        
       
         
       
@@ -6298,8 +6222,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_2_7_6" id="__nav_2_7_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -6313,8 +6238,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_6" id="__nav_2_7_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_7_6">
@@ -6327,32 +6258,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6421,15 +6326,15 @@
     
       
         
-      
-        
-      
-        
-      
-        
-      
-        
           
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -6467,7 +6372,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../reference/symbolizers/" class="md-nav__link ">
+            <a href="../../reference/" class="md-nav__link ">
               
   
   
@@ -6502,32 +6407,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -6614,6 +6493,32 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/symbolizers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Symbolizers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -6916,6 +6821,8 @@
     
       
         
+          
+        
       
         
       
@@ -6939,8 +6846,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_6_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_2_7_6_5" id="__nav_2_7_6_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -6954,8 +6862,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_6_5" id="__nav_2_7_6_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_6_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_7_6_5">
@@ -6968,32 +6882,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -7582,6 +7470,8 @@
     
       
         
+          
+        
       
         
       
@@ -7605,8 +7495,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_7" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_7" id="__nav_2_7_7_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../mbstyle/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -7620,8 +7511,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_7" id="__nav_2_7_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_7">
@@ -7635,32 +7532,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../mbstyle/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -7669,14 +7540,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mbstyle/installing.md" class="md-nav__link">
+      <a href="../../../mbstyle/installing/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Installing the GeoServer MBStyle extension
   
 
     
@@ -7725,7 +7596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../mbstyle/reference/index.md" class="md-nav__link">
+      <a href="../../../mbstyle/reference/" class="md-nav__link">
         
   
   
@@ -7756,6 +7627,8 @@
     
       
         
+          
+        
       
         
       
@@ -7777,8 +7650,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_7_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_7_5" id="__nav_2_7_7_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../mbstyle/cookbook/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -7792,8 +7666,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_7_5" id="__nav_2_7_7_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_7_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_7_5">
@@ -7806,32 +7686,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../mbstyle/cookbook/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8019,6 +7873,8 @@
     
       
         
+          
+        
       
         
       
@@ -8038,8 +7894,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_2" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_2" id="__nav_2_7_8_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../workshop/setup/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -8053,8 +7910,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_2" id="__nav_2_7_8_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_2">
@@ -8067,32 +7930,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../workshop/setup/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8302,6 +8139,8 @@
     
       
         
+          
+        
       
         
       
@@ -8329,8 +8168,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_4" id="__nav_2_7_8_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../workshop/css/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -8344,8 +8184,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_4" id="__nav_2_7_8_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_4">
@@ -8358,32 +8204,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../workshop/css/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8572,6 +8392,8 @@
     
       
         
+          
+        
       
         
       
@@ -8599,8 +8421,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_5" id="__nav_2_7_8_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../workshop/ysld/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -8614,8 +8437,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_5" id="__nav_2_7_8_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_5">
@@ -8628,32 +8457,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../workshop/ysld/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -8842,6 +8645,8 @@
     
       
         
+          
+        
       
         
       
@@ -8869,8 +8674,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7_8_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_7_8_6" id="__nav_2_7_8_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../workshop/mbstyle/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -8884,8 +8690,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_7_8_6" id="__nav_2_7_8_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_7_8_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7_8_6">
@@ -8898,32 +8710,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../workshop/mbstyle/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -9319,14 +9105,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wms/basics.md" class="md-nav__link">
+      <a href="../../../../services/wms/basics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WMS basics
   
 
     
@@ -9487,14 +9273,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wms/configuration.md" class="md-nav__link">
+      <a href="../../../../services/wms/configuration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WMS configuration
   
 
     
@@ -9515,14 +9301,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wms/global.md" class="md-nav__link">
+      <a href="../../../../services/wms/global/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Global variables affecting WMS
   
 
     
@@ -9826,14 +9612,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wfs/schemamapping.md" class="md-nav__link">
+      <a href="../../../../services/wfs/schemamapping/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WFS schema mapping
   
 
     
@@ -9893,6 +9679,8 @@
     
       
         
+          
+        
       
         
       
@@ -9918,8 +9706,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_4" id="__nav_2_8_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../services/features/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -9933,8 +9722,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_4" id="__nav_2_8_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_4">
@@ -9947,32 +9742,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../services/features/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -10066,14 +9835,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/features/status.md" class="md-nav__link">
+      <a href="../../../../services/features/status/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    OGC API - Features Implementation status
   
 
     
@@ -10133,6 +9902,8 @@
     
       
         
+          
+        
       
         
       
@@ -10164,8 +9935,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_5" id="__nav_2_8_5_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../services/wcs/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -10179,8 +9951,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_5" id="__nav_2_8_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_5">
@@ -10193,32 +9971,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../services/wcs/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -10284,14 +10036,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wcs/basics.md" class="md-nav__link">
+      <a href="../../../../services/wcs/basics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    WCS basics
   
 
     
@@ -10463,6 +10215,8 @@
     
       
         
+          
+        
       
         
       
@@ -10480,8 +10234,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_6" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_6" id="__nav_2_8_6_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../services/wmts/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -10495,8 +10250,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_6" id="__nav_2_8_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_6">
@@ -10509,32 +10270,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../services/wmts/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -10870,14 +10605,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wps/processes/geo.md" class="md-nav__link">
+      <a href="../../../../services/wps/processes/geo/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Geometry Processes
   
 
     
@@ -10962,14 +10697,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../services/wps/hazelcast-clustering.md" class="md-nav__link">
+      <a href="../../../../services/wps/hazelcast-clustering/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Hazelcast based process status clustering
   
 
     
@@ -11001,6 +10736,8 @@
     
       
         
+          
+        
       
         
       
@@ -11022,8 +10759,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8_8" >
         
           
-          <label class="md-nav__link" for="__nav_2_8_8" id="__nav_2_8_8_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../services/csw/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -11037,8 +10775,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8_8" id="__nav_2_8_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_8_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8_8">
@@ -11051,32 +10795,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../services/csw/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -12933,7 +12651,7 @@
   <span class="md-ellipsis">
     
   
-    Rest
+    REST
   
 
     
@@ -12955,7 +12673,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Rest
+    REST
   
 
           </label>
@@ -13452,6 +13170,8 @@
       
         
       
+        
+      
     
     
     
@@ -13715,6 +13435,34 @@
     
   
     Coverages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rest/api/crs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinate Reference Systems
   
 
     
@@ -14405,6 +14153,8 @@
     
       
         
+          
+        
       
         
       
@@ -14436,8 +14186,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14_2" >
         
           
-          <label class="md-nav__link" for="__nav_2_14_2" id="__nav_2_14_2_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../security/webadmin/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -14451,8 +14202,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_14_2" id="__nav_2_14_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_14_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_14_2">
@@ -14465,32 +14222,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../security/webadmin/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -14735,6 +14466,8 @@
     
       
         
+          
+        
       
         
       
@@ -14762,8 +14495,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14_3" >
         
           
-          <label class="md-nav__link" for="__nav_2_14_3" id="__nav_2_14_3_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../security/usergrouprole/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -14777,8 +14511,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_14_3" id="__nav_2_14_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_14_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_14_3">
@@ -14792,32 +14532,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../security/usergrouprole/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -14826,14 +14540,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../security/usergrouprole/usergroups.md" class="md-nav__link">
+      <a href="../../../../security/usergrouprole/usergroups/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Users and Groups
   
 
     
@@ -14882,14 +14596,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../security/usergrouprole/roles.md" class="md-nav__link">
+      <a href="../../../../security/usergrouprole/roles/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Roles
   
 
     
@@ -14938,14 +14652,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../security/usergrouprole/rolesource.md" class="md-nav__link">
+      <a href="../../../../security/usergrouprole/rolesource/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Role source and role calculation
   
 
     
@@ -15450,9 +15164,9 @@
     
       
         
-      
-        
           
+        
+      
         
       
         
@@ -15484,7 +15198,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../../../security/tutorials/ldap/" class="md-nav__link ">
+            <a href="../../../../security/tutorials/" class="md-nav__link ">
               
   
   
@@ -15520,20 +15234,22 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
                 
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../../../security/tutorials/index.md" class="md-nav__link">
+      <a href="../../../../security/tutorials/ldap/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Authentication with LDAP
   
 
     
@@ -15545,8 +15261,6 @@
     </li>
   
 
-              
-            
               
             
               
@@ -15810,7 +15524,7 @@
   <span class="md-ellipsis">
     
   
-    Geowebcache
+    GeoWebCache
   
 
     
@@ -15832,7 +15546,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Geowebcache
+    GeoWebCache
   
 
           </label>
@@ -20541,7 +20255,7 @@
   <span class="md-ellipsis">
     
   
-    Configuration
+    Getting Started
   
 
     
@@ -20597,7 +20311,7 @@
   <span class="md-ellipsis">
     
   
-    Advanced
+    Advanced Configuration
   
 
     
@@ -20988,6 +20702,8 @@
       
         
           
+        
+      
         
       
         
@@ -21975,6 +21691,139 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../community/duckdb/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DuckDB
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_17_8" id="__nav_2_17_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DuckDB
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/duckdb/installing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing the DuckDB Extension
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/duckdb/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuring a DuckDB Data Store
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../../../community/elasticsearch/" class="md-nav__link">
         
@@ -22061,7 +21910,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_11" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22083,14 +21932,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_10" id="__nav_2_17_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_11" id="__nav_2_17_11_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_10">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_11">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22228,7 +22077,7 @@
   <span class="md-ellipsis">
     
   
-    Features Templatring Rest API
+    Features Templating Rest API
   
 
     
@@ -22304,7 +22153,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_12" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22326,14 +22175,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_11" id="__nav_2_17_11_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_12" id="__nav_2_17_12_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_12">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22437,7 +22286,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_14" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22459,14 +22308,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_13" id="__nav_2_17_13_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_14" id="__nav_2_17_14_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_14">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22570,7 +22419,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_14" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_15" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22592,14 +22441,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_14" id="__nav_2_17_14_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_15" id="__nav_2_17_15_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_14_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_14">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_15">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22791,7 +22640,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_18" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_19" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -22813,14 +22662,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_18" id="__nav_2_17_18_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_19" id="__nav_2_17_19_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_18_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_18">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_19">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -22944,10 +22793,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_18_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_19_5" >
         
           
-          <label class="md-nav__link" for="__nav_2_17_18_5" id="__nav_2_17_18_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2_17_19_5" id="__nav_2_17_19_5_label" tabindex="0">
             
   
   
@@ -22965,8 +22814,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_17_18_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_18_5">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_17_19_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_19_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23328,7 +23177,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_26" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_27" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23350,14 +23199,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_26" id="__nav_2_17_26_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_27" id="__nav_2_17_27_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_26_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_26">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_27_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_27">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23461,7 +23310,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_27" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_28" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23483,14 +23332,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_27" id="__nav_2_17_27_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_28" id="__nav_2_17_28_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_27_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_27">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_28_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_28">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23581,12 +23430,6 @@
       
         
       
-        
-      
-        
-      
-        
-      
     
     
     
@@ -23598,7 +23441,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_28" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_29" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23620,14 +23463,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_28" id="__nav_2_17_28_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_29" id="__nav_2_17_29_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_28_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_28">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_29_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_29">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23654,90 +23497,6 @@
     
   
     Installation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/jms-cluster/activemq/activemqBroker.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/jms-cluster/activemq/JDBC.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/jms-cluster/activemq/SharedFolder.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
   
 
     
@@ -23789,7 +23548,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_29" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_30" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -23811,14 +23570,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_29" id="__nav_2_17_29_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_30" id="__nav_2_17_30_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_29_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_29">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_30_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_30">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -23980,7 +23739,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_31" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_32" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24002,14 +23761,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_31" id="__nav_2_17_31_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_32" id="__nav_2_17_32_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_31_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_31">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_32_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_32">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24143,7 +23902,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_32" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_33" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24165,14 +23924,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_32" id="__nav_2_17_32_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_33" id="__nav_2_17_33_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_32_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_32">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_33_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_33">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24306,7 +24065,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_33" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_34" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24328,14 +24087,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_33" id="__nav_2_17_33_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_34" id="__nav_2_17_34_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_33_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_33">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_34_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_34">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24563,7 +24322,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_37" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_38" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24585,14 +24344,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_37" id="__nav_2_17_37_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_38" id="__nav_2_17_38_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_37_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_37">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_38_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_38">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -24906,7 +24665,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_39" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_40" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -24928,14 +24687,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_39" id="__nav_2_17_39_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_40" id="__nav_2_17_40_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_39_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_39">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_40_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_40">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25235,7 +24994,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_40" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_41" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25257,14 +25016,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_40" id="__nav_2_17_40_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_41" id="__nav_2_17_41_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_40_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_40">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_41_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_41">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25346,6 +25105,34 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../../../community/png-wind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PNG/Wind community module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -25368,7 +25155,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_41" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_43" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25390,14 +25177,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_41" id="__nav_2_17_41_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_43" id="__nav_2_17_43_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_41_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_41">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_43_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_43">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25479,216 +25266,6 @@
   
   
   
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_42" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_17_42" id="__nav_2_17_42_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    WPS Remote community module
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_42_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_42">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    WPS Remote community module
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/remote-wps/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/remote-wps/install_geoserver.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/remote-wps/install_xmpp.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/remote-wps/install_python.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../community/remote-wps/running_example.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
       <a href="../../../../community/s3-geotiff/" class="md-nav__link">
         
@@ -25739,7 +25316,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_44" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_45" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25761,14 +25338,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_44" id="__nav_2_17_44_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_45" id="__nav_2_17_45_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_44_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_44">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_45_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_45">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -25900,7 +25477,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_46" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_47" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -25922,14 +25499,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_46" id="__nav_2_17_46_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_47" id="__nav_2_17_47_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_46_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_46">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_47_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_47">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26037,7 +25614,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_47" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_48" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26059,14 +25636,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_47" id="__nav_2_17_47_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_48" id="__nav_2_17_48_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_47_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_47">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_48_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_48">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26148,7 +25725,7 @@
   <span class="md-ellipsis">
     
   
-    Schema
+    Opt. 1: Removing Redundant Schema Information
   
 
     
@@ -26176,7 +25753,7 @@
   <span class="md-ellipsis">
     
   
-    Attributes
+    Opt. 2: Removing Redundant Attribute Values
   
 
     
@@ -26226,7 +25803,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_48" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_49" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26248,14 +25825,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_48" id="__nav_2_17_48_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_49" id="__nav_2_17_49_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_48_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_48">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_49_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_49">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26361,7 +25938,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_49" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_50" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26383,14 +25960,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_49" id="__nav_2_17_49_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_50" id="__nav_2_17_50_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_49_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_49">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_50_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_50">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26524,7 +26101,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_50" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_51" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26546,14 +26123,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_50" id="__nav_2_17_50_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_51" id="__nav_2_17_51_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_50_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_50">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_51_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_51">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26689,7 +26266,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_51" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_52" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26711,14 +26288,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_51" id="__nav_2_17_51_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_52" id="__nav_2_17_52_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_51_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_51">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_52_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_52">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -26906,7 +26483,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_53" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_54" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -26928,14 +26505,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_53" id="__nav_2_17_53_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_54" id="__nav_2_17_54_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_53_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_53">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_54_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_54">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -27039,7 +26616,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_54" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_55" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -27061,14 +26638,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_54" id="__nav_2_17_54_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_55" id="__nav_2_17_55_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_54_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_54">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_55_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_55">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -27172,7 +26749,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_55" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17_56" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -27194,14 +26771,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_17_55" id="__nav_2_17_55_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_17_56" id="__nav_2_17_56_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_55_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_17_55">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_17_56_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17_56">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -27414,6 +26991,8 @@
       
         
       
+        
+      
     
     
     
@@ -27532,6 +27111,8 @@
     
       
         
+          
+        
       
         
       
@@ -27553,8 +27134,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_18_4" >
         
           
-          <label class="md-nav__link" for="__nav_2_18_4" id="__nav_2_18_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../tutorials/GetFeatureInfo/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -27568,8 +27150,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_18_4" id="__nav_2_18_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_18_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_18_4">
@@ -27582,32 +27170,6 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../tutorials/GetFeatureInfo/index.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    None
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -27673,14 +27235,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tutorials/GetFeatureInfo/raster.md" class="md-nav__link">
+      <a href="../../../../tutorials/GetFeatureInfo/raster/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Raster GetFeatureInfo Response Customization
   
 
     
@@ -28017,14 +27579,42 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../tutorials/jboss/jboss_tutorial.md" class="md-nav__link">
+      <a href="../../../../tutorials/tomcat-hardening/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    None
+    Tomcat hardening
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../tutorials/jboss/jboss_tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geoserver on JBoss
   
 
     
@@ -29367,7 +28957,7 @@
   <span class="md-ellipsis">
     
   
-    Wps Services
+    WPS Services
   
 
     
@@ -29389,7 +28979,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Wps Services
+    WPS Services
   
 
           </label>
@@ -30237,8 +29827,6 @@
       
         
       
-        
-      
     
     
     
@@ -30382,62 +29970,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../../docguide/install/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installing Sphinx
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../../docguide/installlatex/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installing LaTeX
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../../../docguide/workflow/" class="md-nav__link">
         
   
@@ -30446,6 +29978,34 @@
     
   
     Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../docguide/install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installing MkDocs
   
 
     
@@ -31055,108 +30615,6 @@
           
             <div class="md-content" data-md-component="content">
               
-                
-
-
-
-  
-
-
-  <nav class="md-path" aria-label="Navigation" >
-    <ol class="md-path__list">
-      
-        
-  
-  
-    <li class="md-path__item">
-      <a href="../../../../../.." class="md-path__link">
-        
-  <span class="md-ellipsis">
-    Home
-  </span>
-
-      </a>
-    </li>
-  
-
-      
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../../../../" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    User Manual
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../../../index.md" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Styling
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../../index.md" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    YSLD Styling
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-    
-    
-      <li class="md-path__item">
-        <a href="../index.md" class="md-path__link">
-          
-  <span class="md-ellipsis">
-    Cookbook
-  </span>
-
-        </a>
-      </li>
-    
-  
-
-      
-    </ol>
-  </nav>
-
-              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -31174,7 +30632,7 @@
 <h1 id="polygons">Polygons<a class="headerlink" href="#polygons" title="Permanent link">&para;</a></h1>
 <p>Polygons are two dimensional shapes that contain both an outer edge (or "stroke") and an inside (or "fill"). A polygon can be thought of as an irregularly-shaped point and is styled in similar ways to points.</p>
 <h2 id="ysld_cookbook_polygons_attributes">Example polygons layer<a class="headerlink" href="#ysld_cookbook_polygons_attributes" title="Permanent link">&para;</a></h2>
-<p>The <a href="artifacts/ysld_cookbook_polygon.zip">polygons layer</a> used below contains county information for a fictional country. For reference, the attribute table for the polygons is included below.</p>
+<p>The <a href="../artifacts/ysld_cookbook_polygon.zip">polygons layer</a> used below contains county information for a fictional country. For reference, the attribute table for the polygons is included below.</p>
 <table>
 <thead>
 <tr>
@@ -31226,13 +30684,13 @@
 </tr>
 </tbody>
 </table>
-<p><a href="artifacts/ysld_cookbook_polygon.zip">Download the polygons shapefile</a></p>
+<p><a href="../artifacts/ysld_cookbook_polygon.zip">Download the polygons shapefile</a></p>
 <h2 id="ysld_cookbook_polygons_simplepolygon">Simple polygon<a class="headerlink" href="#ysld_cookbook_polygons_simplepolygon" title="Permanent link">&para;</a></h2>
 <p>This example shows a polygon filled in blue.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_simplepolygon.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_simplepolygon.png" /></p>
 <p><em>Simple polygon</em></p>
 <h3 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_simplepolygon.ysld">Download the "Simple polygon" YSLD</a></p>
+<p><a href="../artifacts/polygon_simplepolygon.ysld">Download the "Simple polygon" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Simple</span><span class="nv"> </span><span class="s">polygon&#39;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31249,10 +30707,10 @@
 </div>
 <h2 id="ysld_cookbook_polygons_simplepolygonwithstroke">Simple polygon with stroke<a class="headerlink" href="#ysld_cookbook_polygons_simplepolygonwithstroke" title="Permanent link">&para;</a></h2>
 <p>This example adds a 2 pixel white stroke to the <a href="#ysld_cookbook_polygons_simplepolygon">Simple polygon</a> example.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_simplepolygonwithstroke.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_simplepolygonwithstroke.png" /></p>
 <p><em>Simple polygon with stroke</em></p>
 <h3 id="code_1">Code<a class="headerlink" href="#code_1" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_simplepolygonwithstroke.ysld">Download the "Simple polygon with stroke" YSLD</a></p>
+<p><a href="../artifacts/polygon_simplepolygonwithstroke.ysld">Download the "Simple polygon with stroke" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Simple</span><span class="nv"> </span><span class="s">polygon</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">stroke&#39;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31267,10 +30725,10 @@
 <p>This example is similar to the <a href="#ysld_cookbook_polygons_simplepolygon">Simple polygon</a> example above, with the addition of <code>stroke</code> parameters (<strong>lines 7-8</strong>). <strong>Line 7</strong> sets the color of stroke to white (<code>'#FFFFFF'</code>) and <strong>line 8</strong> sets the width of the stroke to 2 pixels.</p>
 <h2 id="transparent-polygon">Transparent polygon<a class="headerlink" href="#transparent-polygon" title="Permanent link">&para;</a></h2>
 <p>This example builds on the <a href="#ysld_cookbook_polygons_simplepolygonwithstroke">Simple polygon with stroke</a> example and makes the fill partially transparent by setting the opacity to 50%.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_transparentpolygon.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_transparentpolygon.png" /></p>
 <p><em>Transparent polygon</em></p>
 <h3 id="code_2">Code<a class="headerlink" href="#code_2" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_transparentpolygon.ysld">Download the "Transparent polygon" YSLD</a></p>
+<p><a href="../artifacts/polygon_transparentpolygon.ysld">Download the "Transparent polygon" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Transparent</span><span class="nv"> </span><span class="s">polygon&#39;</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31286,10 +30744,10 @@
 <p>This example is similar to the <a href="#ysld_cookbook_polygons_simplepolygonwithstroke">Simple polygon with stroke</a> example, save for defining the fill's opacity in <strong>line 10</strong>. The value of 0.5 results in partially transparent fill that is 50% opaque. An opacity value of 1 would draw the fill as 100% opaque, while an opacity value of 0 would result in a completely transparent (0% opaque) fill. In this example, since the background is white, the dark blue looks lighter. Were the points imposed on a dark background, the resulting color would be darker.</p>
 <h2 id="ysld_cookbook_polygons_graphicfill">Graphic fill<a class="headerlink" href="#ysld_cookbook_polygons_graphicfill" title="Permanent link">&para;</a></h2>
 <p>This example fills the polygons with a tiled graphic.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_graphicfill.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_graphicfill.png" /></p>
 <p><em>Graphic fill</em></p>
 <h3 id="code_3">Code<a class="headerlink" href="#code_3" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_graphicfill.ysld">Download the "Graphic fill" YSLD</a></p>
+<p><a href="../artifacts/polygon_graphicfill.ysld">Download the "Graphic fill" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Graphic</span><span class="nv"> </span><span class="s">fill&#39;</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31306,14 +30764,14 @@
 </code></pre></div>
 <h3 id="details_3">Details<a class="headerlink" href="#details_3" title="Permanent link">&para;</a></h3>
 <p>This style fills the polygon with a tiled graphic. This is known as an <code>external</code> in YSLD, to distinguish it from commonly-used shapes such as squares and circles that are "internal" to the renderer. <strong>Lines 11-13</strong> specify details for the graphic, with <strong>line 12</strong> setting the path and file name of the graphic and <strong>line 13</strong> indicating the file format (MIME type) of the graphic (<code>image/png</code>). Although a full URL could be specified if desired, no path information is necessary in <strong>line 12</strong> because this graphic is contained in the same directory as the YSLD. <strong>Line 9</strong> determines the height of the displayed graphic in pixels; if the value differs from the height of the graphic then it will be scaled accordingly while preserving the aspect ratio.</p>
-<p><img alt="" src="../../sld/cookbook/images/colorblocks.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/colorblocks.png" /></p>
 <p><em>Graphic used for fill</em></p>
 <h2 id="hatching-fill">Hatching fill<a class="headerlink" href="#hatching-fill" title="Permanent link">&para;</a></h2>
 <p>This example fills the polygons with a hatching pattern.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_hatchingfill.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_hatchingfill.png" /></p>
 <p><em>Hatching fill</em></p>
 <h3 id="code_4">Code<a class="headerlink" href="#code_4" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_hatchingfill.ysld">Download the "Hatching fill" YSLD</a></p>
+<p><a href="../artifacts/polygon_hatchingfill.ysld">Download the "Hatching fill" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Hatching</span><span class="nv"> </span><span class="s">fill&#39;</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31333,10 +30791,10 @@
 <p>In this example, there is a <code>fill-graphic</code> parameter as in the <a href="#ysld_cookbook_polygons_graphicfill">Graphic fill</a> example, but a <code>mark</code> (<strong>lines 11-14</strong>) is used instead of an <code>external</code>. <strong>Line 12</strong> specifies a "times" symbol (an "x") be tiled throughout the polygon. <strong>Line 13</strong> sets the color to purple (<code>'#990099'</code>), <strong>line 14</strong> sets the width of the hatches to 1 pixel, and <strong>line 9</strong> sets the size of the tile to 16 pixels. Because hatch tiles are always square, the <code>size</code> sets both the width and the height.</p>
 <h2 id="ysld_cookbook_polygons_polygonwithdefaultlabel">Polygon with default label<a class="headerlink" href="#ysld_cookbook_polygons_polygonwithdefaultlabel" title="Permanent link">&para;</a></h2>
 <p>This example shows a text label on the polygon. In the absence of any other customization, this is how a label will be displayed.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_polygonwithdefaultlabel.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_polygonwithdefaultlabel.png" /></p>
 <p><em>Polygon with default label</em></p>
 <h3 id="code_5">Code<a class="headerlink" href="#code_5" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_polygonwithdefaultlabel.ysld">Download the "Polygon with default label" YSLD</a></p>
+<p><a href="../artifacts/polygon_polygonwithdefaultlabel.ysld">Download the "Polygon with default label" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Polygon</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">default</span><span class="nv"> </span><span class="s">label&#39;</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31354,10 +30812,10 @@
 <p>In this example there is a polygon symbolizer and a text symbolizer. <strong>Lines 6-9</strong> comprise the polygon symbolizer. The fill of the polygon is set on <strong>line 7</strong> to a light green (<code>'#40FF40'</code>) while the stroke of the polygon is set on <strong>lines 8-9</strong> to white (<code>'#FFFFFF'</code>) with a thickness of 2 pixels. The label is set in the text symbolizer on <strong>lines 10-12</strong>, with <strong>line 11</strong> determining what text to display, in this case the value of the "name" attribute. (Refer to the attribute table in the <a href="#ysld_cookbook_polygons_attributes">Example polygons layer</a> section if necessary.) All other details about the label are set to the renderer default, which here is Times New Roman font, font color black, and font size of 10 pixels.</p>
 <h2 id="label-halo">Label halo<a class="headerlink" href="#label-halo" title="Permanent link">&para;</a></h2>
 <p>This example alters the look of the <a href="#ysld_cookbook_polygons_polygonwithdefaultlabel">Polygon with default label</a> by adding a white halo to the label.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_labelhalo.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_labelhalo.png" /></p>
 <p><em>Label halo</em></p>
 <h3 id="code_6">Code<a class="headerlink" href="#code_6" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_labelhalo.ysld">Download the "Label halo" YSLD</a></p>
+<p><a href="../artifacts/polygon_labelhalo.ysld">Download the "Label halo" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Label</span><span class="nv"> </span><span class="s">halo&#39;</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31379,10 +30837,10 @@
 <p>This example is similar to the <a href="#ysld_cookbook_polygons_polygonwithdefaultlabel">Polygon with default label</a>, with the addition of a halo around the labels on <strong>lines 12-14</strong>. A halo creates a color buffer around the label to improve label legibility. <strong>Line 14</strong> sets the radius of the halo, extending the halo 3 pixels around the edge of the label, and <strong>line 13</strong> sets the color of the halo to white (<code>'#FFFFFF'</code>). Since halos are most useful when set to a sharp contrast relative to the text color, this example uses a white halo around black text to ensure optimum readability.</p>
 <h2 id="ysld_cookbook_polygons_polygonwithstyledlabel">Polygon with styled label<a class="headerlink" href="#ysld_cookbook_polygons_polygonwithstyledlabel" title="Permanent link">&para;</a></h2>
 <p>This example improves the label style from the <a href="#ysld_cookbook_polygons_polygonwithdefaultlabel">Polygon with default label</a> example by centering the label on the polygon, specifying a different font name and size, and setting additional label placement optimizations.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_polygonwithstyledlabel.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_polygonwithstyledlabel.png" /></p>
 <p><em>Polygon with styled label</em></p>
 <h3 id="code_7">Code<a class="headerlink" href="#code_7" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_polygonwithstyledlabel.ysld">Download the "Polygon with styled label" YSLD</a></p>
+<p><a href="../artifacts/polygon_polygonwithstyledlabel.ysld">Download the "Polygon with styled label" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Polygon</span><span class="nv"> </span><span class="s">with</span><span class="nv"> </span><span class="s">styled</span><span class="nv"> </span><span class="s">label&#39;</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31410,10 +30868,10 @@
 <p>Finally, there are two added touches for label placement optimization: <strong>line 20</strong> ensures that long labels are split across multiple lines by setting line wrapping on the labels to 60 pixels, and <strong>line 21</strong> allows the label to be displaced by up to 150 pixels. This ensures that labels are compacted and less likely to spill over polygon boundaries. Notice little Massive County in the corner, whose label is now displayed."</p>
 <h2 id="attribute-based-polygon">Attribute-based polygon<a class="headerlink" href="#attribute-based-polygon" title="Permanent link">&para;</a></h2>
 <p>This example styles the polygons differently based on the "pop" (Population) attribute.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_attributebasedpolygon.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_attributebasedpolygon.png" /></p>
 <p><em>Attribute-based polygon</em></p>
 <h3 id="code_8">Code<a class="headerlink" href="#code_8" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_attributebasedpolygon.ysld">Download the "Attribute-based polygon" YSLD</a></p>
+<p><a href="../artifacts/polygon_attributebasedpolygon.ysld">Download the "Attribute-based polygon" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Attribute-based</span><span class="nv"> </span><span class="s">polygon&#39;</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31480,14 +30938,14 @@
 <p>The third rule, on <strong>lines 17-22</strong>, specifies a style for polygons whose population attribute is greater than or equal to 500,000. The filter is set on <strong>line 19</strong>. The color of the polygon fill is the only other difference in this rule, which is set to a dark green (<code>'#009900'</code>) on <strong>line 22</strong>.</p>
 <h2 id="zoom-based-polygon">Zoom-based polygon<a class="headerlink" href="#zoom-based-polygon" title="Permanent link">&para;</a></h2>
 <p>This example alters the style of the polygon at different zoom levels.</p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_zoombasedpolygonlarge.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_zoombasedpolygonlarge.png" /></p>
 <p><em>Zoom-based polygon: Zoomed in</em></p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_zoombasedpolygonmedium.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_zoombasedpolygonmedium.png" /></p>
 <p><em>Zoom-based polygon: Partially zoomed</em></p>
-<p><img alt="" src="../../sld/cookbook/images/polygon_zoombasedpolygonsmall.png" /></p>
+<p><img alt="" src="../../../sld/cookbook/images/polygon_zoombasedpolygonsmall.png" /></p>
 <p><em>Zoom-based polygon: Zoomed out</em></p>
 <h3 id="code_9">Code<a class="headerlink" href="#code_9" title="Permanent link">&para;</a></h3>
-<p><a href="artifacts/polygon_zoombasedpolygon.ysld">Download the "Zoom-based polygon" YSLD</a></p>
+<p><a href="../artifacts/polygon_zoombasedpolygon.ysld">Download the "Zoom-based polygon" YSLD</a></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;YSLD</span><span class="nv"> </span><span class="s">Cook</span><span class="nv"> </span><span class="s">Book:</span><span class="nv"> </span><span class="s">Zoom-based</span><span class="nv"> </span><span class="s">polygon&#39;</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">feature-styles</span><span class="p">:</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
@@ -31586,6 +31044,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -31691,7 +31151,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../../..", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.indexes", "navigation.path", "navigation.footer"], "search": "../../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../../..", "features": ["search.suggest", "search.highlight", "content.code.copy", "content.tabs.link", "content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.indexes", "navigation.footer"], "search": "../../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
       <script src="../../../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
